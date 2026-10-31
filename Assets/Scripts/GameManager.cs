@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private float appsPerSec;
     [SerializeField] private float yield;
-    [SerializeField] private string maxStage;
+    [SerializeField] private int maxStage;
     [SerializeField] private float processingTime;
     [SerializeField] private int credits;
     [Header("Prefabs")]
@@ -39,12 +39,36 @@ public class GameManager : MonoBehaviour
 
         Initialize();
     }
+    private float timeElapsed;
+    private void Update()
+    {
+        timeElapsed += Time.deltaTime;
+        if (timeElapsed >= 1f / appsPerSec)
+        {
+            SendApplication();
+            timeElapsed = 0f;
+        }
+    }
+    public int GetMaxStage()
+    {
+        return maxStage;
+    }
+    public int GetCredits()
+    {
+        return credits;
+    }
     private void Initialize()
     {
         appsPerSecText.SetText(appsPerSec.ToString());
         yieldText.SetText((yield * 100).ToString() + "%");
         processingTimeText.SetText(processingTime.ToString() + "s");
-        maxStageText.SetText(maxStage);
+        string maxStageString = "";
+        if (maxStage == 0) maxStageString = "considered";
+        else if (maxStage == 1) maxStageString = "interview 1";
+        else if (maxStage == 2) maxStageString = "interview 2";
+        else if (maxStage == 3) maxStageString = "interview 3";
+        else if (maxStage == 4) maxStageString = "accepted";
+        maxStageText.SetText(maxStageString);
         creditsText.SetText(credits.ToString());
     }
     public void AddAppsPerSec(float amount)
@@ -59,10 +83,14 @@ public class GameManager : MonoBehaviour
     }
     public void IncreaseMaxStage()
     {
-        if (maxStage == "considered") maxStage = "interview 1";
-        else if (maxStage == "interview 1") maxStage = "interview 2";
-        else if (maxStage == "interview 2") maxStage = "interview 3";
-        else if (maxStage == "interview 3") maxStage = "accepted";
+        maxStage += 1;
+        string maxStageString = "";
+        if (maxStage == 0) maxStageString = "considered";
+        else if (maxStage == 1) maxStageString = "interview 1";
+        else if (maxStage == 2) maxStageString = "interview 2";
+        else if (maxStage == 3) maxStageString = "interview 3";
+        else if (maxStage == 4) maxStageString = "accepted";
+        maxStageText.SetText(maxStageString);
     }
     public void SubtractProcessingTime(float amount)
     {

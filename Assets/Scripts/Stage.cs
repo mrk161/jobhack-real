@@ -7,6 +7,7 @@ public class Stage : MonoBehaviour
     [SerializeField] private int nextStageIndex;
     [SerializeField] private TMP_Text failCount;
     [SerializeField] private TMP_Text passCount;
+    [SerializeField] private int maxStage;
     private int fails;
     private int passes;
     public void Trigger(float yield)
@@ -14,7 +15,11 @@ public class Stage : MonoBehaviour
         float threshold = Random.Range(0f, 1f);
         if (threshold <= yield)
         {
-            Success();
+            if (GameManager.Instance.GetMaxStage() >= maxStage)
+            {
+                Success();
+            }
+            else Fail();
         }
         else
         {
