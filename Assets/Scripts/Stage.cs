@@ -1,0 +1,41 @@
+using NUnit.Framework.Constraints;
+using TMPro;
+using UnityEngine;
+
+public class Stage : MonoBehaviour
+{
+    [SerializeField] private int nextStageIndex;
+    [SerializeField] private TMP_Text failCount;
+    [SerializeField] private TMP_Text passCount;
+    private int fails;
+    private int passes;
+    public void Trigger(float yield)
+    {
+        float threshold = Random.Range(0f, 1f);
+        if (threshold <= yield)
+        {
+            Success();
+        }
+        else
+        {
+            Fail();
+        }
+    }
+    private void Success()
+    {
+        GameManager.Instance.Progress(nextStageIndex);
+        passes += 1;
+        DisplayCounts();
+        GameManager.Instance.AddCredits(1);
+    }
+    private void Fail()
+    {
+        fails += 1;
+        DisplayCounts();
+    }
+    private void DisplayCounts()
+    {
+        failCount.SetText(fails.ToString());
+        passCount.SetText(passes.ToString());
+    }
+}
