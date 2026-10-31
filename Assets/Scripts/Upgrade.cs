@@ -23,13 +23,13 @@ public class Upgrade : MonoBehaviour
     private Color orangeColor;
     void Awake()
     {
+        ColorUtility.TryParseHtmlString("#FF7300", out orangeColor);
         GetComponent<Image>().color = Color.white;
         foreach(TMP_Text text in GetComponentsInChildren<TMP_Text>())
         {
             text.color = Color.black;
         }
         statText.color = orangeColor;
-        ColorUtility.TryParseHtmlString("#FF7300", out orangeColor);
         costText.SetText(cost.ToString() + "C");
         titleText.SetText(title);
         bodyText.SetText(body);

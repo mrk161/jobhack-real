@@ -1,6 +1,7 @@
 using NUnit.Framework.Constraints;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Stage : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Stage : MonoBehaviour
     [SerializeField] private int maxStage;
     private int fails;
     private int passes;
+    public bool final;
+    [SerializeField] private UnityEvent finalEvent;
     public void Trigger(float yield)
     {
         float threshold = Random.Range(0f, 1f);
@@ -28,6 +31,11 @@ public class Stage : MonoBehaviour
     }
     private void Success()
     {
+        if (final)
+        {
+            finalEvent.Invoke();
+            return;
+        }
         GameManager.Instance.Progress(nextStageIndex);
         passes += 1;
         DisplayCounts();
@@ -35,6 +43,10 @@ public class Stage : MonoBehaviour
     }
     private void Fail()
     {
+        if (final)
+        {
+            return;
+        }
         fails += 1;
         DisplayCounts();
     }
