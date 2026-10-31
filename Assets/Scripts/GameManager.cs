@@ -42,10 +42,32 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         appsPerSecText.SetText(appsPerSec.ToString());
-        yieldText.SetText((yield * 10).ToString() + "%");
+        yieldText.SetText((yield * 100).ToString() + "%");
         processingTimeText.SetText(processingTime.ToString() + "s");
         maxStageText.SetText(maxStage);
         creditsText.SetText(credits.ToString());
+    }
+    public void AddAppsPerSec(float amount)
+    {
+        appsPerSec += amount;
+        appsPerSecText.SetText(appsPerSec.ToString());
+    }
+    public void AddYield(float amount)
+    {
+        yield += amount;
+        yieldText.SetText((yield * 100).ToString() + "%");
+    }
+    public void IncreaseMaxStage()
+    {
+        if (maxStage == "considered") maxStage = "interview 1";
+        else if (maxStage == "interview 1") maxStage = "interview 2";
+        else if (maxStage == "interview 2") maxStage = "interview 3";
+        else if (maxStage == "interview 3") maxStage = "accepted";
+    }
+    public void SubtractProcessingTime(float amount)
+    {
+        processingTime -= amount;
+        processingTimeText.SetText(processingTime.ToString() + "s");
     }
     public void AddCredits(int amount)
     {
