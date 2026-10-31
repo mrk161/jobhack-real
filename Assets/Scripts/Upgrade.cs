@@ -23,12 +23,18 @@ public class Upgrade : MonoBehaviour
     private Color orangeColor;
     void Awake()
     {
+        GetComponent<Image>().color = Color.white;
+        foreach(TMP_Text text in GetComponentsInChildren<TMP_Text>())
+        {
+            text.color = Color.black;
+        }
+        statText.color = orangeColor;
         ColorUtility.TryParseHtmlString("#FF7300", out orangeColor);
         costText.SetText(cost.ToString() + "C");
         titleText.SetText(title);
         bodyText.SetText(body);
         if (timeBetweenFreeApp != 0) statText.SetText("apps/sec: +" + timeBetweenFreeApp);
-        if (yield != 0) statText.SetText("yield: +" + yield * 100f);
+        if (yield != 0) statText.SetText("yield: +" + yield * 100f + "%");
         string maxStageString = "";
         if (maxStage == 0) maxStageString = "considered";
         else if (maxStage == 1) maxStageString = "interview 1";
