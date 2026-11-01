@@ -21,6 +21,7 @@ public class Upgrade : MonoBehaviour
     [SerializeField] private float yield;
     [SerializeField] private int maxStage;
     [SerializeField] private float processingTime;
+    private bool purchased;
     private Color orangeColor;
     void Awake()
     {
@@ -48,6 +49,11 @@ public class Upgrade : MonoBehaviour
     }
     void Update()
     {
+        if (purchased)
+        {
+            GetComponent<Button>().interactable = false;
+            return;
+        }
         if (GameManager.Instance.GetCredits() >= cost)
         {
             GetComponent<Button>().interactable = true;
@@ -59,6 +65,10 @@ public class Upgrade : MonoBehaviour
     }
     public void Purchase()
     {
+        purchased = true;
+        ColorBlock colors = GetComponent<Button>().colors;
+        colors.disabledColor = new Color(GetComponent<Button>().colors.disabledColor.r, GetComponent<Button>().colors.disabledColor.g, GetComponent<Button>().colors.disabledColor.b, 255);
+        GetComponent<Button>().colors = colors;
         if (GameManager.Instance.GetCredits() >= cost)
         {
             GameManager.Instance.AddCredits(-cost);
