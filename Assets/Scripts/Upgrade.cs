@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Upgrade : MonoBehaviour
 {
+    [SerializeField] private bool triggerCardInfo;
     [Header("References")]
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text costText;
@@ -29,6 +30,7 @@ public class Upgrade : MonoBehaviour
         {
             text.color = Color.black;
         }
+        GetComponent<Button>().interactable = false;
         statText.color = orangeColor;
         costText.SetText(cost.ToString() + "C");
         titleText.SetText(title);
@@ -43,6 +45,17 @@ public class Upgrade : MonoBehaviour
         else if (maxStage == 4) maxStageString = "accepted";
         if (maxStage != 0) statText.SetText("max stage -> " + maxStageString);
         if (processingTime != 0) statText.SetText("process time: -" + processingTime);
+    }
+    void Update()
+    {
+        if (GameManager.Instance.GetCredits() >= cost)
+        {
+            GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            GetComponent<Button>().interactable = false;
+        }
     }
     public void Purchase()
     {
@@ -60,6 +73,10 @@ public class Upgrade : MonoBehaviour
         foreach(TMP_Text text in GetComponentsInChildren<TMP_Text>())
         {
             text.color = Color.white;
+        }
+        if (triggerCardInfo)
+        {
+            GameManager.Instance.TriggerCardInfo();
         }
     }
 }

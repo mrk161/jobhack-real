@@ -1,7 +1,8 @@
-using NUnit.Framework.Constraints;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Stage : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Stage : MonoBehaviour
     [SerializeField] private TMP_Text failCount;
     [SerializeField] private TMP_Text passCount;
     [SerializeField] private int maxStage;
+    [SerializeField] private UnityEvent onSuccess;
+    [SerializeField] private UnityEvent onFail;
     private int fails;
     private int passes;
     public bool final;
@@ -40,6 +43,7 @@ public class Stage : MonoBehaviour
         passes += 1;
         DisplayCounts();
         GameManager.Instance.AddCredits(1);
+        onSuccess.Invoke();
     }
     private void Fail()
     {
@@ -49,10 +53,15 @@ public class Stage : MonoBehaviour
         }
         fails += 1;
         DisplayCounts();
+        onFail.Invoke();
     }
     private void DisplayCounts()
     {
         failCount.SetText(fails.ToString());
         passCount.SetText(passes.ToString());
+    }
+    public void SetStageColor()
+    {
+        GetComponent<Image>().color = new Color(GetComponent<Image>().color.r, GetComponent<Image>().color.g, GetComponent<Image>().color.b, 255);
     }
 }

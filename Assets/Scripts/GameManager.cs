@@ -3,6 +3,7 @@ using System.Diagnostics;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text processingTimeText;
     [SerializeField] private TMP_Text maxStageText;
     [SerializeField] private TMP_Text creditsText;
+    [SerializeField] private Button sendAppButton;
+    [SerializeField] private GameObject cardInfo;
+    [SerializeField] private AudioClip cardInfoSound;
+    [SerializeField] private AudioSource audioSource;
     public static GameManager Instance { get; private set; }
     void Awake()
     {
@@ -39,13 +44,23 @@ public class GameManager : MonoBehaviour
 
         Initialize();
     }
+    public void TriggerCardInfo()
+    {
+        Time.timeScale = 0f;
+        cardInfo.SetActive(true);
+        audioSource.PlayOneShot(cardInfoSound);
+    }
+    public void EndCardInfo()
+    {
+        Time.timeScale = 1f;
+    }
     private float timeElapsed;
     private void Update()
     {
         timeElapsed += Time.deltaTime;
         if (timeElapsed >= 1f / appsPerSec)
         {
-            SendApplication();
+            sendAppButton.onClick.Invoke();
             timeElapsed = 0f;
         }
     }
