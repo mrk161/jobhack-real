@@ -44,11 +44,25 @@ public class GameManager : MonoBehaviour
 
         Initialize();
     }
+    public void WreckIt()
+    {
+        appsPerSec = 0;
+        yield = 0f;
+        processingTime = 9999999999999999999999f;
+        foreach(GameObject meter in GameObject.FindGameObjectsWithTag("Meter"))
+        {
+            Destroy(meter);
+        }
+    }
     public void TriggerCardInfo()
     {
         Time.timeScale = 0f;
         cardInfo.SetActive(true);
         audioSource.PlayOneShot(cardInfoSound);
+    }
+    public void EndPauseTime()
+    {
+        Time.timeScale = 0f;
     }
     public void EndCardInfo()
     {
